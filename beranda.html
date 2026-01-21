@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Tracking Register Surat</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #f5f5f5;
+      }
+
+      /* ================= HEADER / NAVBAR ================= */
+
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1.25rem;
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        border-radius: 0 0 16px 16px;
+      }
+
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .nav-logo-img {
+        height: 32px;
+      }
+
+      .nav-logo-text {
+        font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #111827;
+      }
+
+      .nav-menu {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      .nav-link {
+        position: relative;
+        padding: 0.4rem 0.9rem;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        color: #6b7280;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border: none;
+        background: transparent;
+      }
+
+      .nav-link:hover {
+        color: #111827;
+        background: rgba(37, 99, 235, 0.06);
+      }
+
+      .nav-link.active {
+        color: #ffffff;
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
+        box-shadow: 0 8px 16px rgba(37, 99, 235, 0.35);
+      }
+
+      /* Hamburger (mobile) */
+      .nav-toggle {
+        display: none;
+      }
+
+      .nav-toggle-label {
+        display: none;
+        cursor: pointer;
+        width: 32px;
+        height: 32px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .nav-toggle-label span,
+      .nav-toggle-label span::before,
+      .nav-toggle-label span::after {
+        display: block;
+        background: #111827;
+        height: 2px;
+        width: 18px;
+        border-radius: 999px;
+        position: relative;
+        transition: all 0.2s ease;
+      }
+
+      .nav-toggle-label span::before,
+      .nav-toggle-label span::after {
+        content: "";
+        position: absolute;
+        left: 0;
+      }
+
+      .nav-toggle-label span::before {
+        top: -6px;
+      }
+
+      .nav-toggle-label span::after {
+        top: 6px;
+      }
+
+      .nav-toggle:checked + .nav-toggle-label span {
+        background: transparent;
+      }
+
+      .nav-toggle:checked + .nav-toggle-label span::before {
+        transform: translateY(6px) rotate(45deg);
+      }
+
+      .nav-toggle:checked + .nav-toggle-label span::after {
+        transform: translateY(-6px) rotate(-45deg);
+      }
+
+      @media (max-width: 768px) {
+        .nav-logo-text {
+          font-size: 11px;
+        }
+
+        .nav-toggle-label {
+          display: flex;
+        }
+
+        .nav-menu {
+          position: absolute;
+          top: 100%;
+          right: 1.25rem;
+          margin-top: 0.5rem;
+          background: #ffffff;
+          box-shadow: 0 16px 40px rgba(15, 23, 42, 0.22);
+          border-radius: 16px;
+          padding: 0.5rem;
+          flex-direction: column;
+          gap: 0.25rem;
+          min-width: 160px;
+          opacity: 0;
+          pointer-events: none;
+          transform: translateY(-8px);
+          transition: all 0.2s ease;
+        }
+
+        .nav-toggle:checked ~ .nav-menu {
+          opacity: 1;
+          pointer-events: auto;
+          transform: translateY(0);
+        }
+
+        .nav-link {
+          width: 100%;
+          text-align: left;
+        }
+      }
+
+      /* ================= HERO / DASHBOARD SECTION ================= */
+
+      .hero-wrapper {
+        position: relative;
+        background:
+          linear-gradient(135deg, rgba(15,108,191,0.85), rgba(11,83,148,0.9)),
+          url('https://ppid.ciamiskab.go.id/images/core/setda-ciamis.png') center/cover no-repeat;
+        color: #fff;
+        padding: 32px 15px 40px;
+        text-align: center;
+      }
+
+      .hero-inner {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .hero-logo-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+      }
+
+      .hero-logo-row img {
+        height: 48px;
+      }
+
+      .hero-logo-text {
+        font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      .hero-title {
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .hero-subtitle {
+        font-size: 14px;
+        margin-bottom: 14px;
+      }
+
+      .search-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px 16px 18px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+        max-width: 700px;
+        margin: 0 auto;
+        color: #333;
+      }
+
+      .search-tabs {
+        display: flex;
+        border-radius: 999px;
+        background: #f3f4f6;
+        padding: 4px;
+        margin-bottom: 10px;
+      }
+
+      .tab-btn {
+        flex: 1;
+        border: none;
+        background: transparent;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .tab-btn.active {
+        background: #e60012;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .search-body {
+        margin-top: 4px;
+      }
+
+      .search-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .search-row input[type="text"] {
+        flex: 1;
+        min-width: 0;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid #d1d5db;
+        font-size: 13px;
+      }
+
+      .search-row button {
+        padding: 8px 18px;
+        border-radius: 999px;
+        border: none;
+        background: #e60012;
+        color: #fff;
+        font-size: 13px;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .search-note {
+        font-size: 11px;
+        color: #666;
+        margin-top: 4px;
+        text-align: left;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        background: #fff;
+        padding: 20px;
+        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      }
+
+      .status {
+        margin-top: 8px;
+        color: #374151;
+        font-size: 13px;
+      }
+
+      .section-header-card {
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 10px 14px;
+        margin: 0 0 10px 0;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        border: 1px solid #e5e7eb;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .section-header-title {
+        font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #111827;
+      }
+
+      .section-header-subtitle {
+        margin-top: 2px;
+        font-size: 12px;
+        color: #6b7280;
+      }
+
+      .result-card {
+        margin-top: 16px;
+        border: 1px solid #e5e7eb;
+        padding: 16px 20px;
+        background: #fafafa;
+        border-radius: 10px;
+        width: 100%;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+      }
+
+      .result-info {
+        font-size: 13px;
+        margin-bottom: 8px;
+        color: #111827;
+        font-weight: 600;
+      }
+
+      .result-table-wrap {
+        overflow-x: auto;
+      }
+
+      /* ==== TABEL HASIL: LEBAR KOLOM AMAN ==== */
+      .result-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      .result-table th,
+      .result-table td {
+        border: 1px solid #d1d5db;
+        padding: 8px 10px;
+        text-align: left;
+        vertical-align: top;
+        color: #111827;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        font-size: 13px;
+      }
+
+      .result-table th {
+        background: #e5e7eb;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .result-table tbody tr:nth-child(even) {
+        background: #f9fafb;
+      }
+
+      .result-table a {
+        color: #0f6cbf;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .result-table a:hover {
+        text-decoration: underline;
+      }
+
+      /* Sembunyikan kolom Photo Surat (kolom ke-10) */
+      .result-table th:nth-child(10),
+      .result-table td:nth-child(10) {
+        display: none;
+      }
+
+      /* Kolom 8 tetap 1 baris */
+      .result-table th:nth-child(8),
+      .result-table td:nth-child(8) {
+        white-space: nowrap;
+      }
+
+      /* Kolom 2,3,4,6 boleh wrap */
+      .result-table th:nth-child(2),
+      .result-table td:nth-child(2),
+      .result-table th:nth-child(3),
+      .result-table td:nth-child(3),
+      .result-table th:nth-child(4),
+      .result-table td:nth-child(4),
+      .result-table th:nth-child(6),
+      .result-table td:nth-child(6) {
+        white-space: normal;
+        overflow-wrap: break-word;
+      }
+
+      /* Kolom perihal & keterangan dibiarkan lebar dan bisa wrap */
+      .result-table th:nth-child(5),
+      .result-table td:nth-child(5),
+      .result-table th:nth-child(9),
+      .result-table td:nth-child(9) {
+        white-space: normal;
+      }
+
+      /* Kolom 2,3,4 sama lebar */
+      .result-table th:nth-child(2),
+      .result-table th:nth-child(3),
+      .result-table th:nth-child(4),
+      .result-table td:nth-child(2),
+      .result-table td:nth-child(3),
+      .result-table td:nth-child(4) {
+        min-width: 80px;
+        max-width: 100px;
+      }
+
+      /* Kolom perihal lebar, nomor surat lebih kecil */
+      .result-table td:nth-child(5) {
+        min-width: 200px;
+      }
+
+      .result-table td:nth-child(6) {
+        min-width: 100px;
+        max-width: 140px;
+      }
+
+      /* Mobile */
+      @media (max-width: 600px) {
+        .hero-title {
+          font-size: 22px;
+        }
+        .search-row {
+          flex-direction: column;
+        }
+        .search-row button {
+          width: 100%;
+        }
+
+        .result-table {
+          font-size: 13px;
+        }
+        .result-table th,
+        .result-table td {
+          padding: 9px 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER MENU -->
+    <header class="navbar">
+      <div class="nav-left">
+        <img class="nav-logo-img" src="https://i.ibb.co.com/hxSPQqs4/cakra-galuh-ksg-1.png" alt="Logo Kabupaten Ciamis">
+        <div class="nav-logo-text">REGISTER SURAT NAIK</div>
+      </div>
+
+      <input type="checkbox" id="nav-toggle" class="nav-toggle">
+      <label for="nav-toggle" class="nav-toggle-label">
+        <span></span>
+      </label>
+
+      <nav class="nav-menu">
+        <button class="nav-link active" onclick="goToPage('beranda')">Dashboard</button>
+      </nav>
+    </header>
+
+    <!-- KONTEN DASHBOARD / TRACKING -->
+    <main id="app-content">
+      <section class="hero-wrapper">
+        <div class="hero-inner">
+          <div class="hero-logo-row">
+            <img src="https://i.ibb.co.com/hxSPQqs4/cakra-galuh-ksg-1.png" alt="Logo Kabupaten Ciamis">
+            <span class="hero-logo-text">BAGIAN HUKUM SEKRETARIAT DAERAH KABUPATEN CIAMIS</span>
+          </div>
+          <div class="hero-title">Tracking Surat Bagian Hukum</div>
+          <div class="hero-subtitle">
+            Lacak Status Usulan Produk Hukum yang dikelola oleh Bagian Hukum Setda Kabupaten Ciamis.
+          </div>
+
+          <div class="search-card">
+            <div class="search-tabs">
+              <button type="button" class="tab-btn active" data-target="pengolah">
+                Pengolah / Pengusul
+              </button>
+              <button type="button" class="tab-btn" data-target="nosurat">
+                Nomor Surat
+              </button>
+            </div>
+
+            <!-- FORM PENGOLAH / PENGUSUL + PERIHAL -->
+            <div class="search-body" id="form-pengolah">
+              <div class="search-row">
+                <input type="text" id="pengolahInput" placeholder="Nama pengolah/pengusul">
+                <input type="text" id="perihalInput" placeholder="Perihal / Isi Surat">
+                <button type="button" onclick="cariPengolahPerihal()">Cari</button>
+              </div>
+              <div class="search-note">
+                Isi salah satu atau kedua kolom (Pengolah/Pengusul dan Perihal/Isi Surat), lalu tekan tombol Cari.
+              </div>
+            </div>
+
+            <!-- FORM NOMOR SURAT -->
+            <div class="search-body hidden" id="form-nosurat">
+              <div class="search-row">
+                <input type="text" id="noSuratInput" placeholder="Nomor surat terdaftar">
+                <button type="button" onclick="cariNoSurat()">Lacak</button>
+              </div>
+              <div class="search-note">
+                Nomor surat mengacu pada register surat yang tersimpan di sistem.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="container">
+        <!-- HEADER HASIL TRACKING (full width) -->
+        <div class="section-header-card">
+          <div class="section-header-title">Hasil Tracking Surat</div>
+          <div class="section-header-subtitle">
+            Rekap status surat usulan berdasarkan hasil pencarian di sistem.
+          </div>
+        </div>
+
+        <p class="status" id="statusMsg"></p>
+
+        <div id="hasil" class="result-card" style="display:none;">
+          <div class="result-info" id="resultCountInfo">Tidak ada data.</div>
+          <div class="result-table-wrap">
+            <table class="result-table">
+              <thead>
+                <tr>
+                  <th>Pengolah/Pengusul</th>
+                  <th>Tgl Naik Kabag</th>
+                  <th>Tgl Turun Dispos Kabag</th>
+                  <th>Tgl Naik Asda</th>
+                  <th>Perihal/Isi Surat</th>
+                  <th>Nomor Surat</th>
+                  <th>Legal Drafter</th>
+                  <th>Tgl Selesai</th>
+                  <th>Keterangan</th>
+                  <th>Photo Surat</th>
+                </tr>
+              </thead>
+              <tbody id="resultBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      function getBaseUrl(callback) {
+        google.script.run
+          .withSuccessHandler(function (url) {
+            callback(url);
+          })
+          .getScriptUrl();
+      }
+
+      function goToPage(page) {
+        getBaseUrl(function (baseUrl) {
+          window.location.href = baseUrl + '?page=' + encodeURIComponent(page);
+        });
+      }
+
+      function initTabs() {
+        document.querySelectorAll('.tab-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            document.querySelectorAll('.tab-btn').forEach(function (b) {
+              b.classList.remove('active');
+            });
+            btn.classList.add('active');
+
+            var target = btn.getAttribute('data-target');
+            if (target === 'pengolah') {
+              document.getElementById('form-pengolah').classList.remove('hidden');
+              document.getElementById('form-nosurat').classList.add('hidden');
+            } else {
+              document.getElementById('form-pengolah').classList.add('hidden');
+              document.getElementById('form-nosurat').classList.remove('hidden');
+            }
+          });
+        });
+      }
+      document.addEventListener('DOMContentLoaded', initTabs);
+
+      function renderHasilList(list, label) {
+        const hasilDiv  = document.getElementById('hasil');
+        const tbody     = document.getElementById('resultBody');
+        const info      = document.getElementById('resultCountInfo');
+        const statusMsg = document.getElementById('statusMsg');
+
+        if (!list || list.length === 0) {
+          hasilDiv.style.display = 'none';
+          info.textContent       = 'Tidak ada data.';
+          statusMsg.textContent  = 'Data tidak ditemukan.';
+          return;
+        }
+
+        hasilDiv.style.display = 'block';
+        info.textContent       = label + ' - Jumlah data: ' + list.length;
+        statusMsg.textContent  = '';
+
+        let html = '';
+        list.forEach(function (item) {
+          html += '<tr>';
+          html += '<td>' + (item.pengolah_pengusul || '') + '</td>';
+          html += '<td>' + (item.tgl_naik_kabag || '') + '</td>';
+          html += '<td>' + (item.tgl_turun_dispos_kabag || '') + '</td>';
+          html += '<td>' + (item.tgl_naik_asda || '') + '</td>';
+          html += '<td>' + (item.perihal_isi || '') + '</td>';
+          html += '<td>' + (item.nomor_surat || '') + '</td>';
+          html += '<td>' + (item.legal_drafter || '') + '</td>';
+          html += '<td>' + (item.tgl_selesai || '') + '</td>';
+          html += '<td>' + (item.keterangan || '') + '</td>';
+
+          if (item.upload_photo_surat) {
+            html += '<td><a href="' + item.upload_photo_surat + '" target="_blank">Lihat</a></td>';
+          } else {
+            html += '<td>-</td>';
+          }
+
+          html += '</tr>';
+        });
+
+        tbody.innerHTML = html;
+      }
+
+      // PENCARIAN PENGOLAH + PERIHAL (memanggil GS: cariByPengolahPerihal)
+      function cariPengolahPerihal() {
+        const nama    = document.getElementById('pengolahInput').value.trim();
+        const perihal = document.getElementById('perihalInput').value.trim();
+        const statusMsg = document.getElementById('statusMsg');
+        const hasilDiv  = document.getElementById('hasil');
+
+        if (!nama && !perihal) {
+          statusMsg.textContent = 'Minimal isi Pengolah/Pengusul atau Perihal/Isi Surat.';
+          hasilDiv.style.display = 'none';
+          return;
+        }
+
+        statusMsg.textContent = 'Mencari data berdasarkan pengolah/pengusul dan/atau perihal...';
+
+        google.script.run
+          .withSuccessHandler(function (res) {
+            if (!res || !res.ditemukan) {
+              document.getElementById('resultBody').innerHTML = '';
+              document.getElementById('hasil').style.display = 'none';
+              document.getElementById('resultCountInfo').textContent = 'Tidak ada data.';
+              statusMsg.textContent = res && res.pesan ? res.pesan : 'Data tidak ditemukan.';
+              return;
+            }
+            renderHasilList(res.data, 'Hasil pencarian pengolah/pengusul & perihal');
+          })
+          .withFailureHandler(function (err) {
+            statusMsg.textContent = 'Terjadi kesalahan: ' + err.message;
+          })
+          .cariByPengolahPerihal(nama, perihal);
+      }
+
+      // PENCARIAN NOMOR SURAT (memanggil GS: cariByNoSuratRegisNaik)
+      function cariNoSurat() {
+        const noSurat   = document.getElementById('noSuratInput').value.trim();
+        const statusMsg = document.getElementById('statusMsg');
+        const hasilDiv  = document.getElementById('hasil');
+
+        if (!noSurat) {
+          statusMsg.textContent = 'Nomor surat belum diisi.';
+          hasilDiv.style.display = 'none';
+          return;
+        }
+
+        statusMsg.textContent = 'Mencari data berdasarkan nomor surat...';
+
+        google.script.run
+          .withSuccessHandler(function (res) {
+            if (!res || !res.ditemukan) {
+              document.getElementById('resultBody').innerHTML = '';
+              document.getElementById('hasil').style.display = 'none';
+              document.getElementById('resultCountInfo').textContent = 'Tidak ada data.';
+              statusMsg.textContent = res && res.pesan ? res.pesan : 'Data tidak ditemukan.';
+              return;
+            }
+            renderHasilList(res.data, 'Hasil pencarian nomor surat');
+          })
+          .withFailureHandler(function (err) {
+            statusMsg.textContent = 'Terjadi kesalahan: ' + err.message;
+          })
+          .cariByNoSuratRegisNaik(noSurat);
+      }
+    </script>
+  </body>
+</html>
